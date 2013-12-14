@@ -37,9 +37,9 @@ module Dispel
       @cache.clear
     end
 
-    def draw(view, style_map, cursor)
+    def draw(view, style_map=[], cursor=nil)
       draw_view(view, style_map)
-      Curses.setpos(*cursor)
+      Curses.setpos(*cursor) if cursor
     end
 
     def debug_key(key)

@@ -7,7 +7,7 @@ Dispel::Screen.open(:color => true) do |screen|
   map.add(:reverse, 0, 1..5)
   map.add(["#aa0000", "#00aa00"], 0, 5..8)
 
-  screen.draw "Shiny Rainbows!\nDefault\nand more!", map, [0,0]
+  screen.draw "Shiny Rainbows!\nDefault\nand more!", map, [0,3]
 
   Dispel::Keyboard.output { break }
 end
