@@ -51,6 +51,7 @@ end
 
 Example applications
  - [ruco](https://github.com/grosser/ruco)
+ - [tic_tac_toe](https://github.com/grosser/tic_tac_toe)
 
 
 Author
