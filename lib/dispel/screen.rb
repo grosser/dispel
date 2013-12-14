@@ -136,7 +136,8 @@ module Dispel
       # create a new color from foreground+background or reuse old
       # and return color-id
       def color_id(foreground, background)
-        Tools.memoize(:color_id, foreground, background) do
+        @color_ids ||= {}
+        @color_ids[[foreground, background]] ||= begin
           # make a new pair with a unique id
           @@max_color_id ||= 0
           id = (@@max_color_id += 1)

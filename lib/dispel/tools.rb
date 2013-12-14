@@ -12,16 +12,6 @@ module Dispel
         result.empty? ? [''] : result
       end
 
-      def memoize(*args)
-        key = args.map(&:to_s).join("-")
-        @memoize ||= {}
-        if @memoize.key?(key)
-          @memoize[key]
-        else
-          @memoize[key] = yield
-        end
-      end
-
       def last_element(range)
         range.exclude_end? ? range.last.pred : range.last
       end
