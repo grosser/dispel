@@ -20,11 +20,7 @@ Dispel::Screen.open do |screen|
   screen.draw "Initial state, press any key!\n\n   Oh boy!"
 
   Dispel::Keyboard.output do |key|
-    case key
-    when :resize then screen.clear_cache
-    when :"Ctrl+c" then break
-    end
-
+    break if key == :"Ctrl+c"
     screen.draw "Looks like you pressed #{key} (Ctrl+c to quit)"
   end
 end
@@ -49,10 +45,12 @@ end
 ```
 <!-- example -->
 
-Example applications
+# Example applications
  - [ruco](https://github.com/grosser/ruco)
  - [tic_tac_toe](https://github.com/grosser/tic_tac_toe)
 
+# TODO
+ - resize event should triggered instantly after resizing, not after first key press
 
 Author
 ======

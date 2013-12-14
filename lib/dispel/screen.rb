@@ -35,11 +35,8 @@ module Dispel
       Curses.stdscr.maxy
     end
 
-    def clear_cache
-      @cache.clear
-    end
-
     def draw(view, style_map=[], cursor=[0,0])
+      @cache.clear if dimensions_changed?
       draw_view(view, style_map)
       Curses.setpos(*cursor) # cursor has to always be set or it ends in random position
     end
@@ -95,6 +92,12 @@ module Dispel
       return if @cache[key] == args # would not change the line -> nothing to do
       @cache[key] = args # store current line
       yield # render the line
+    end
+
+    def dimensions_changed?
+      current_dimensions = [columns, lines]
+      @old_dimensions != current_dimensions
+      @old_dimensions = current_dimensions
     end
 
     class << self
