@@ -3,7 +3,7 @@ require "spec_helper"
 describe Dispel::Screen do
   describe :curses_style do
     it "is 'normal' for nothing" do
-      Dispel::Screen.curses_style(:normal, true).should == 256
+      Dispel::Screen.curses_style(:normal, true).should == (ENV["TRAVIS"] ? 256 : 512)
     end
 
     it "is red for red" do
@@ -12,7 +12,7 @@ describe Dispel::Screen do
     end
 
     it "is reverse for reverse" do
-      Dispel::Screen.curses_style(:reverse, true).should == 512
+      Dispel::Screen.curses_style(:reverse, true).should == (ENV["TRAVIS"] ? 512 : 256)
     end
 
     it "raises on unknown style" do
