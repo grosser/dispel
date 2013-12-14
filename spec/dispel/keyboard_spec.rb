@@ -2,10 +2,10 @@
 require "spec_helper"
 
 describe Dispel::Keyboard do
-  def output
+  def output(options={})
     keys = []
     Timeout.timeout(0.3) do
-      Dispel::Keyboard.output do |key|
+      Dispel::Keyboard.output(options) do |key|
         keys << key
       end
     end
@@ -19,7 +19,9 @@ describe Dispel::Keyboard do
       char = chars.shift
       if char == :sleep_long
         sleep 0.1
-        nil
+        Dispel::Keyboard::NOTHING
+      elsif char.nil?
+        Dispel::Keyboard::NOTHING
       else
         char
       end
@@ -132,5 +134,21 @@ describe Dispel::Keyboard do
     t = Time.now.to_f
     type Array.new(999).map{ 27 }
     (Time.now.to_f - t).should <= 0.01
+  end
+
+  context "timeout" do
+    it "shows timeout when inactive" do
+      type [:sleep_long, nil, :sleep_long, nil, :sleep_long, nil]
+      output(:timeout => 0.2).should == [:timeout]
+    end
+
+    it "does not show timeout when active" do
+      type [:sleep_long, nil, 'a', nil, :sleep_long, nil, 'a', nil, :sleep_long, nil]
+      output(:timeout => 0.2).should == ['a']
+    end
+
+    it "blows up if timeout is lower then SEQUENCE_TIMEOUT" do
+      expect { output(:timeout => 0.0000001) }.to raise_error
+    end
   end
 end

@@ -9,25 +9,42 @@ module Dispel
     SEQUENCE_TIMEOUT = 0.005
     NOTHING = (2**32 - 1) # getch returns this as 'nothing' on 1.8 but nil on 1.9.2
     A_TO_Z = ('a'..'z').to_a
+    DEFAULT_INPUT = lambda { Curses.getch }
 
     def self.input(&block)
       @input = block
     end
 
-    def self.output
-      input { Curses.getch } unless @input # keep input replaceable for tests, but default to curses
-
+    def self.output(options={}, &block)
       @sequence = []
       @started = Time.now.to_f
+      timeout = options[:timeout]
+
+      if timeout && SEQUENCE_TIMEOUT > timeout
+        raise "Timeout must be higher then SEQUENCE_TIMEOUT (#{SEQUENCE_TIMEOUT})"
+      end
 
       loop do
+        @now = Time.now.to_f
+        @elapsed = @now - @started
+
         key = fetch_user_input
-        if sequence_finished?
-          sequence_to_keys(@sequence).each{|k| yield k }
+
+        # finish previous sequence
+        if @sequence.any? and @elapsed > SEQUENCE_TIMEOUT
+          sequence_to_keys(@sequence).each(&block)
           @sequence = []
         end
-        next unless key
-        append_to_sequence key
+
+        if key # start new sequence
+          @started = @now
+          @sequence << key
+        elsif timeout and @elapsed > timeout
+          @started = @now
+          yield :timeout
+        else
+          sleep SEQUENCE_TIMEOUT # nothing happening -> sleep a bit to save cpu
+        end
       end
     end
 
@@ -127,19 +144,9 @@ module Dispel
     end
 
     def self.fetch_user_input
-      key = @input.call or return
+      key = (@input || DEFAULT_INPUT).call || NOTHING
       key = key.ord unless IS_18
-      if key >= NOTHING
-        # nothing happening -> sleep a bit to save cpu
-        sleep SEQUENCE_TIMEOUT
-        return
-      end
-      key
-    end
-
-    def self.append_to_sequence(key)
-      @started = Time.now.to_f
-      @sequence << key
+      key if key < NOTHING
     end
 
     def self.bytes_to_string(bytes)
@@ -174,10 +181,6 @@ module Dispel
     # not ascii and not control-char
     def self.multi_byte_part?(byte)
       127 < byte and byte < 256
-    end
-
-    def self.sequence_finished?
-      @sequence.size != 0 and (Time.now.to_f - @started) > SEQUENCE_TIMEOUT
     end
 
     # paste of multiple \n or \n in text would cause weird indentation
