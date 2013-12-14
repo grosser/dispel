@@ -15,6 +15,8 @@ module Dispel
     end
 
     def self.output
+      input { Curses.getch } unless @input # keep input replaceable for tests, but default to curses
+
       @sequence = []
       @started = Time.now.to_f
 

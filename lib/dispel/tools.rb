@@ -22,24 +22,8 @@ module Dispel
         end
       end
 
-      # so far the only terminal that supports it:
-      # - xterm-256color on osx
-      # - xterm and xterm-256color on ubuntu 10.04+
-      # (setting ENV['TERM'] will sometimes crash un-rescue-able -> test if it works)
-      def activate_256_colors
-        require 'ruco/file_store'
-        (
-          # not windows
-        RbConfig::CONFIG['host_os'] !~ /mswin|mingw/ and
-
-          # possible to open xterm-256color
-          ['xterm', 'xterm-256color'].include?(ENV['TERM']) and
-          Ruco::FileStore.new('~/.ruco/cache').cache('color_possible'){
-            system(%{TERM=xterm-256color ruby -r curses -e 'Curses.noecho' > /dev/null 2>&1})
-          }
-
-        # finally switch terminal, so curses knows we want colors
-        ) and ENV['TERM'] = 'xterm-256color'
+      def last_element(range)
+        range.exclude_end? ? range.last.pred : range.last
       end
     end
   end

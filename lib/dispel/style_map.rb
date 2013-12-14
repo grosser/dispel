@@ -21,7 +21,7 @@ module Dispel
         next unless styles
 
         # change to style at start and recalculate one after the end
-        points_of_change = styles.map{|s,c| [c.first, c.last_element+1] }.flatten.uniq
+        points_of_change = styles.map{|s,c| [c.first, Tools.last_element(c)+1] }.flatten.uniq
 
         flat = []
 

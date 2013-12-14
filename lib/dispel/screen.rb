@@ -2,8 +2,6 @@ require 'curses'
 
 module Dispel
   class Screen
-    @@styles = {}
-
     def initialize(options)
       @options = options
       @cache = []
@@ -20,7 +18,7 @@ module Dispel
       Curses.raw # give us all other keys
       Curses.stdscr.nodelay = 1 # do not block -> we can use timeouts
       Curses.init_screen
-      Curses.start_color if $ruco_colors and Curses.has_colors?
+      Curses.start_color if color?
       yield self
     ensure
       Curses.clear # needed to clear the menu/status bar on windows
@@ -50,6 +48,10 @@ module Dispel
       write(@key_line, 0, "#{key.inspect}---")
     end
 
+    def color?
+      @options[:color] and Curses.has_colors?
+    end
+
     private
 
     def write(line,row,text)
@@ -76,7 +78,7 @@ module Dispel
           # position at start of line and draw
           Curses.setpos(line_number,0)
           Dispel::StyleMap.styled(line, styles).each do |style, part|
-            Curses.attrset self.class.curses_style(style, $ruco_colors)
+            Curses.attrset self.class.curses_style(style, color?)
             Curses.addstr part
           end
 
