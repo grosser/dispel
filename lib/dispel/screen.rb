@@ -1,3 +1,5 @@
+require 'curses'
+
 module Dispel
   class Screen
     @@styles = {}
@@ -7,7 +9,7 @@ module Dispel
       @cache = []
     end
 
-    def self.open(options, &block)
+    def self.open(options={}, &block)
       new(options).open(&block)
     end
 
@@ -56,7 +58,7 @@ module Dispel
     end
 
     def draw_view(view, style_map)
-      lines = view.naive_split("\n")
+      lines = Tools.naive_split(view, "\n")
       style_map = style_map.flatten
 
       lines.each_with_index do |line, line_number|
@@ -93,7 +95,7 @@ module Dispel
 
     class << self
       def curses_style(style, colors)
-        memoize(:curses_style, style, colors) do
+        Tools.memoize(:curses_style, style, colors) do
           if colors
             foreground = $ruco_foreground || '#ffffff'
             background = $ruco_background || '#000000'
@@ -124,7 +126,7 @@ module Dispel
       # create a new color from foreground+background or reuse old
       # and return color-id
       def color_id(foreground, background)
-        memoize(:color_id, foreground, background) do
+        Tools.memoize(:color_id, foreground, background) do
           # make a new pair with a unique id
           @@max_color_id ||= 0
           id = (@@max_color_id += 1)
@@ -146,16 +148,6 @@ module Dispel
         g = (html_color[3..4].to_i(16) / COLOR_DIVIDE) * 6
         b = (html_color[5..6].to_i(16) / COLOR_DIVIDE) * 1
         TERM_COLOR_BASE + r + g + b
-      end
-
-      def memoize(*args)
-        key = args.map(&:to_s).join("-")
-        @memoize ||= {}
-        if @memoize.key?(key)
-          @memoize[key]
-        else
-          @memoize[key] = yield
-        end
       end
     end
   end
