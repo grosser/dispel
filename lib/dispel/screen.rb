@@ -2,6 +2,8 @@ require 'curses'
 
 module Dispel
   class Screen
+    attr_accessor :options
+
     def initialize(options)
       @options = options
       @cache = []
@@ -49,7 +51,7 @@ module Dispel
     end
 
     def color?
-      @options[:color] and Curses.has_colors?
+      @options[:colors] and Curses.has_colors?
     end
 
     private
@@ -78,7 +80,7 @@ module Dispel
           # position at start of line and draw
           Curses.setpos(line_number,0)
           Dispel::StyleMap.styled(line, styles).each do |style, part|
-            Curses.attrset self.class.curses_style(style, color?)
+            Curses.attrset self.class.curses_style(style, color?, options)
             Curses.addstr part
           end
 
@@ -96,11 +98,12 @@ module Dispel
     end
 
     class << self
-      def curses_style(style, colors)
+      # TODO maybe instance and simpler caching...
+      def curses_style(style, colors, options={})
         Tools.memoize(:curses_style, style, colors) do
           if colors
-            foreground = $ruco_foreground || '#ffffff'
-            background = $ruco_background || '#000000'
+            foreground = options[:foreground] || '#ffffff'
+            background = options[:background] || '#000000'
 
             foreground, background = if style == :normal
               [foreground, background]
