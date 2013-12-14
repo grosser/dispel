@@ -77,7 +77,7 @@ module Dispel
           # position at start of line and draw
           Curses.setpos(line_number,0)
           Dispel::StyleMap.styled(line, styles).each do |style, part|
-            Curses.attrset self.class.curses_style(style, color?, options)
+            Curses.attrset curses_style(style)
             Curses.addstr part
           end
 
@@ -100,33 +100,35 @@ module Dispel
       @old_dimensions = current_dimensions
     end
 
+    def curses_style(style)
+      @style ||= {}
+      @style[style] ||= self.class.curses_style(style, color?, options)
+    end
+
     class << self
-      # TODO maybe instance and simpler caching...
       def curses_style(style, colors, options={})
-        Tools.memoize(:curses_style, style, colors) do
-          if colors
-            foreground = options[:foreground] || '#ffffff'
-            background = options[:background] || '#000000'
+        if colors
+          foreground = options[:foreground] || '#ffffff'
+          background = options[:background] || '#000000'
 
-            foreground, background = if style == :normal
-              [foreground, background]
-            elsif style == :reverse
-              ['#000000', '#ffffff']
-            else
-              # :red or [:red, :blue]
-              f,b = style
-              [f || foreground, b || background]
-            end
+          foreground, background = if style == :normal
+            [foreground, background]
+          elsif style == :reverse
+            ['#000000', '#ffffff']
+          else
+            # :red or [:red, :blue]
+            f,b = style
+            [f || foreground, b || background]
+          end
 
-            foreground = html_to_terminal_color(foreground)
-            background = html_to_terminal_color(background)
-            color_id(foreground, background)
-          else # no colors
-            if style == :reverse
-              Curses::A_REVERSE
-            else
-              Curses::A_NORMAL
-            end
+          foreground = html_to_terminal_color(foreground)
+          background = html_to_terminal_color(background)
+          color_id(foreground, background)
+        else # no colors
+          if style == :reverse
+            Curses::A_REVERSE
+          else
+            Curses::A_NORMAL
           end
         end
       end
