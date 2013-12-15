@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dispel (0.0.2)
+    dispel (0.0.3)
 
 GEM
   remote: https://rubygems.org/
