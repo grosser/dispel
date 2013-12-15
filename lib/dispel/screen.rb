@@ -66,9 +66,8 @@ module Dispel
         styles = style_map[line_number]
 
         # expand line with whitespace to overwrite previous content
-        missing = columns - line.size
-        raise line if missing < 0
-        line += " " * missing
+        # and remove overflow to avoid display errors
+        line = line.ljust(columns, " ").slice!(0, columns)
 
         # display tabs as single-space -> nothing breaks
         line.gsub!("\t",' ')
