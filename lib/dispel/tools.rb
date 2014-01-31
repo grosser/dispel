@@ -12,10 +12,6 @@ module Dispel
         result.empty? ? [''] : result
       end
 
-      def last_element(range)
-        range.exclude_end? ? range.last.pred : range.last
-      end
-
       # http://grosser.it/2010/12/31/ruby-string-indexes-indices-find-all-indexes-in-a-string
       def indexes(string, needle)
         found = []
