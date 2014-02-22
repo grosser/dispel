@@ -1,6 +1,6 @@
 before_install:
-  - sudo apt-get install -y libonig-dev && bundle install
+  - sudo apt-get install -y libonig-dev
 rvm:
-  - ree
-  - 1.9.3
   - 2.0.0
+  - 2.1.0
+
