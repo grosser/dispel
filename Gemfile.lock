@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dispel (0.0.5)
+    dispel (0.0.6)
       curses
 
 GEM
