@@ -21,7 +21,8 @@ module Dispel
         next unless styles
 
         # change to style at start and recalculate one after the end
-        points_of_change = styles.map{|s,c| [c.first, c.max + 1] }.flatten.uniq
+        points_of_change = styles.map{|s,c| c.min ? [c.min, c.max + 1] : nil }.flatten.compact.uniq
+        next if points_of_change.empty?
 
         flat = []
 

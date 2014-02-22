@@ -18,6 +18,11 @@ describe Dispel::StyleMap do
       ]
     end
 
+    it "can handle empty styles" do
+      map.add(:reverse, 1, 0...0)
+      map.flatten.should == [nil, nil, nil]
+    end
+
     it "reproduces merged styles" do
       map.add(:reverse, 1, 2..4)
       map.add(:red, 1, 3..5)
