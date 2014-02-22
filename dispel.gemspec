@@ -9,6 +9,7 @@ Gem::Specification.new name, Dispel::VERSION do |s|
   s.homepage = "http://github.com/grosser/#{name}"
   s.files = `git ls-files lib/ bin/ MIT-LICENSE`.split("\n")
   s.license = "MIT"
+  s.required_ruby_version = '>= 2.0.0' # curses does not build on 1.9
   s.add_runtime_dependency "curses"
   cert = File.expand_path("~/.ssh/gem-private-key-grosser.pem")
   if File.exist?(cert)
