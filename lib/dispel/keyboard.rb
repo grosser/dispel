@@ -133,7 +133,7 @@ module Dispel
       when ESCAPE then :escape
       when Curses::KEY_RESIZE then :resize
       else
-        if key.is_a? Fixnum
+        if key.is_a? Integer
           key > MAX_CHAR ? key : key.chr
         elsif is_alt_key_code?(key)
           :"Alt+#{key.slice(1,1)}"
