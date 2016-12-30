@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dispel (0.0.7)
+    dispel (0.0.8)
       curses
 
 GEM
@@ -28,3 +28,6 @@ DEPENDENCIES
   dispel!
   rake
   rspec (~> 2)
+
+BUNDLED WITH
+   1.13.6
