@@ -73,6 +73,17 @@ end
 # TODO
  - resize event should triggered instantly after resizing, not after first key press
 
+# Contribute
+
+1. Fork it, clone it
+2. `bundle`
+3. `rake`
+4. Create your feature branch (`git checkout -b my-new-feature`)
+5. Write some tests, write some code, have some fun
+6. Commit your changes (`git commit -am 'Add some feature'`)
+7. Push to the branch (`git push origin my-new-feature`)
+8. Create new Pull Request
+
 Author
 ======
 [Michael Grosser](http://grosser.it)<br/>
