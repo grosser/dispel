@@ -33,7 +33,7 @@ end
 require 'dispel'
 
 # draw app and redraw after each keystroke
-Dispel::Screen.open(:colors => true) do |screen|
+Dispel::Screen.open(colors: true) do |screen|
   map = Dispel::StyleMap.new(3) # number of lines
   map.add(:reverse, 0, 1..5)    # :normal / :reverse / color, line, characters
   map.add(["#aa0000", "#00aa00"], 0, 5..8) # foreground red, background green
@@ -52,7 +52,7 @@ require 'dispel'
 
 # draw app and redraw after each keystroke
 Dispel::Screen.open do |screen|
-  Dispel::Keyboard.output :timeout => 0.5 do |key|
+  Dispel::Keyboard.output timeout: 0.5 do |key|
     if key == :timeout
       screen.draw "The time is #{Time.now}"
     elsif key == :"Ctrl+c"
