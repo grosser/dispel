@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    dispel (0.0.8)
+    dispel (0.1.0)
       curses
 
 GEM
   remote: https://rubygems.org/
   specs:
     bump (0.6.0)
-    curses (1.2.4)
+    curses (1.2.5)
     diff-lcs (1.3)
     rake (12.3.1)
     rspec (2.99.0)
