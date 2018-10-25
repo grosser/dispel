@@ -69,6 +69,7 @@ end
  - [ruco](https://github.com/grosser/ruco)
  - [tic_tac_toe](https://github.com/grosser/tic_tac_toe)
  - [a-panzer](https://github.com/grosser/a-panzer)
+ - [takeoff](https://gitlab.com/gitlab-org/takeoff)
 
 # TODO
  - resize event should triggered instantly after resizing, not after first key press
