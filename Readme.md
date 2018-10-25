@@ -45,7 +45,7 @@ end
 ```
 <!-- example -->
 
-### Timeouts
+### Periodical refresh
 <!-- example timeout -->
 ```Ruby
 require 'dispel'
